@@ -1,0 +1,39 @@
+.lottie {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 -15px;
+    bottom: 0;
+    transition: all 400ms;
+
+    &:hover {
+        margin: 0;
+        bottom: 10px;
+        transform: scale(1.5);
+    }
+}
+
+.reduced-motion {
+    .lottie {
+        clip-path: circle(42%);
+
+        &:hover {
+            margin: 0 -15px;
+            bottom: 0;
+            transform: none;
+            background-color: var(--mantine-color-forumBlueGray-3);
+        }
+    }
+}
+
+.small {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: calc(100dvw - 2 * var(--mantine-spacing-md));
+
+    .lottie:hover {
+        margin: 0 -15px;
+        bottom: 0;
+        transform: none;
+    }
+}

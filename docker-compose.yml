@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+        - MAX_UPLOAD_SIZE=${MAX_UPLOAD_SIZE}
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ${UPLOADS_DIR}:/uploads
+    environment:
+      - ENV=prod
+      - DB_HOST=db
+      - DB_DATABASE=db
+      - DB_USER=app
+      - JWT_SECRET=${JWT_SECRET}
+      - UPLOADS_DIR=/uploads
+      - MAX_UPLOAD_SIZE=${MAX_UPLOAD_SIZE}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.3
+    restart: always
+    volumes:
+      - ./scripts/db:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      retries: 1

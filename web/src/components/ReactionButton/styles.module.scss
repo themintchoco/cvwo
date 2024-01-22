@@ -1,0 +1,27 @@
+.lottie {
+    width: 40px;
+    height: 40px;
+    margin: 0 -10px;
+    mask-image: radial-gradient(
+        circle at left center,
+        transparent 0,
+        transparent 14.5px,
+        black 14.5px,
+        black 100%
+    );
+
+    &:first-child {
+        margin-left: -15px;
+        mask-image: none;
+    }
+    
+    &:last-child {
+        margin-right: -8px;
+    }
+}
+
+.dropdown {
+    border: 0 !important;
+    padding-top: 0 !important;
+    background-color: transparent !important;
+}
