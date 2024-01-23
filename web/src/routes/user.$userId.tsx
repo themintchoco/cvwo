@@ -72,7 +72,11 @@ const User = () => {
               <Tabs.Panel value="posts">
                 <Box {...postsProps}>
                   {
-                    posts?.length ? posts.map(({ data, props }) => (
+                    postsLoading ? (
+                      <Group justify="center">
+                        <Loader size="lg" />
+                      </Group>
+                    ) : posts?.length ? posts.map(({ data, props }) => (
                       <Box {...props}>
                         <Post post={data} linkToPost mb="sm" />
                       </Box>
@@ -81,14 +85,6 @@ const User = () => {
                         <Text size="lg" fw={600}>No posts yet</Text>
                         <Text>When {user.username} posts something, it will appear here.</Text>
                       </Stack>
-                    )
-                  }
-
-                  {
-                    postsLoading && (
-                      <Group justify="center">
-                        <Loader size="lg" />
-                      </Group>
                     )
                   }
 
@@ -107,7 +103,11 @@ const User = () => {
               <Tabs.Panel value="comments">
                 <Box {...commentsProps}>
                   {
-                    comments?.length ? comments.map(({ data, props }) => (
+                    commentsLoading ? (
+                      <Group justify="center">
+                        <Loader size="lg" />
+                      </Group>
+                    ) : comments?.length ? comments.map(({ data, props }) => (
                       <Box {...props}>
                         <Paper shadow="sm" radius="md" p="lg" mb="sm">
                           <Comment comment={data} linkToComment />
@@ -118,14 +118,6 @@ const User = () => {
                         <Text size="lg" fw={600}>No comments yet</Text>
                         <Text>When {user.username} comments something, it will appear here.</Text>
                       </Stack>
-                    )
-                  }
-
-                  {
-                    commentsLoading && (
-                      <Group justify="center">
-                        <Loader size="lg" />
-                      </Group>
                     )
                   }
 
