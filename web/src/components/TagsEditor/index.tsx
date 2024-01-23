@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
-import { Button, Combobox, Group, Paper, TextInput, useCombobox } from '@mantine/core'
+import { Button, Combobox, Group, Loader, Paper, TextInput, useCombobox } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
+import { notifications } from '@mantine/notifications'
 import { Plus, X } from '@phosphor-icons/react'
 
 import { useTags } from '@/hooks/tags'
@@ -28,20 +29,31 @@ export const TagsEditor = ({ tags = [], onChange, maxTags, disabled } : TagsEdit
 
   const tagSuggestions = data?.filter((tag) => !tags.includes(tag.name))
 
-  const handleChange = (value: string) => {
-    value = value.toLowerCase().replace(/[^a-z-]/g, '')
-
-    if (value.endsWith(',')) {
-      handleTagSelect(value.slice(0, -1))
-      return
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value.toLowerCase().replace(/[^a-z-]/g, '')
 
     if (value.length > 32) return
 
     setValue(value)
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Tab' && value.length > 0) {
+      e.preventDefault()
+      e.stopPropagation()
+
+      handleTagSelect(value)
+    }
+  }
+
   const handleTagSelect = (tag: string) => {
+    if (tags.includes(tag)) return notifications.show({
+      autoClose: 5000,
+      title: 'Tag already added',
+      message: 'This tag is already added to the post',
+      color: 'red',
+    })
+
     onChange?.([tag, ...tags])
     setEditing(false)
     setValue('')
@@ -62,7 +74,8 @@ export const TagsEditor = ({ tags = [], onChange, maxTags, disabled } : TagsEdit
                 placeholder="Tag"
                 aria-label="Tag"
                 value={value}
-                onChange={(e) => handleChange(e.currentTarget.value)}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 autoFocus
               />
             </Combobox.Target>
@@ -83,6 +96,14 @@ export const TagsEditor = ({ tags = [], onChange, maxTags, disabled } : TagsEdit
                       <Paper bg="gray" w={10} h={10} radius="xl" mr="xs" display="inline-block" />
                       { value }
                     </Combobox.Option>
+                  )
+                }
+
+                {
+                  !value && (!tagSuggestions || tagSuggestions.length === 0) && (
+                    <Group justify="center" py="md">
+                      <Loader />
+                    </Group>
                   )
                 }
               </Combobox.Options>
