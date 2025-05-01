@@ -60,4 +60,4 @@ A simple web forum featuring
 ## Declaration of AI Use
 
 - GitHub Copilot was used to accelerate code writing
-- Generative AI was used to create the forum's Community Guidelines as well as example discussion on the [hosted instance](https://cvwo.sheeee.sh). 
+- Generative AI was used to create the forum's Community Guidelines as well as example discussion on the [hosted instance](https://cvwo.mintcho.co).
